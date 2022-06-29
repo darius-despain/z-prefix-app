@@ -6,7 +6,7 @@ const config = {
 
     //replace with url of deployed api
     production: {
-        apiUrl: "https://[yourappName]-api.herokuapp.com"
+        apiUrl: "https://sandbox-ddespain-api.herokuapp.com"
     },
 
     test: {
