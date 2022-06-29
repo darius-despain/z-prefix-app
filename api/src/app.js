@@ -162,7 +162,6 @@ app.post('/users', async (req, res) => {
 
   let body = req.body;
   let validreq = false;
-  let validUser = false;
   let validUsername = false;
   let filteredBody = {};
   let hashedPassword;
@@ -172,13 +171,14 @@ app.post('/users', async (req, res) => {
 
   if (body[keys[0]] && body[keys[1]] && body[keys[2]] && body[keys[3]]) {
     validreq = true;
-    hashedPassword = bcrypt.hash(body.password, 10);
-    filteredBody = {
-      'first_name': body[keys[0]],
-      'last_name': body[keys[1]],
-      'username': body[keys[2]],
-      'password': hashedPassword,
-    }
+    hashedPassword = bcrypt.hash(body.password, 10).then((hash) => {
+      filteredBody = {
+        'first_name': body[keys[0]],
+        'last_name': body[keys[1]],
+        'username': body[keys[2]],
+        'password': hash,
+      }
+    });
     userNamePromise = knex('users')
       .where('username', '=', body.username)
       .select('*')
@@ -220,25 +220,29 @@ app.post('/login', async (req, res) => {
 
   }
 
-  knex('users')
-    .where('users.username', '=', body.username)
-    .select('password')
-    .then(data => {
-      if(data.length > 0) {
-        bcrypt.compare(body.password, data[0].password)
-        .then(results => {
-          if(results) {
-            res.set("Access-Control-Allow-Origin", "*");
-            res.status(200).send('authenticated')
-          } else {
-            res.set("Access-Control-Allow-Origin", "*");
-            res.status(400).send('invalid password')
-          }
-        })
-      } else {
-        res.status(404).send('invalid username');
-      }
-    })
+  if(validreq) {
+    knex('users')
+      .where('users.username', '=', body.username)
+      .select('password')
+      .then(data => {
+        if(data.length > 0) {
+          bcrypt.compare(body.password, data[0].password)
+          .then(results => {
+            if(results) {
+              res.set("Access-Control-Allow-Origin", "*");
+              res.status(200).send('authenticated')
+            } else {
+              res.set("Access-Control-Allow-Origin", "*");
+              res.status(400).send('invalid password')
+            }
+          })
+        } else {
+          res.status(404).send('invalid username');
+        }
+      })
+  } else {
+    res.status(404).send('invalid request');
+  }
 
 })
 module.exports = app;
