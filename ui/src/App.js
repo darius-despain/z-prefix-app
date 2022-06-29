@@ -19,6 +19,7 @@ const App = () => {
     <div>
       App is running - good work:
       { names.map(author => author.firstName + " ")}
+      <p>Testing Testing 123</p>
     </div>
   );
 }
