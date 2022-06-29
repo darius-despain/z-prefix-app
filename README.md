@@ -1,5 +1,7 @@
 # Full Stack Application scaffold
 
+author: Darius DeSpain (gihub user: darius-despain)
+
 This repo is designed to aid in speeding up development of a full-stack application by giving a running scaffold with a react front-end, express server, and datbase.
 
 ## To set up application:
@@ -8,8 +10,8 @@ clone this repository
 
     git clone <url>
 
-Replace placeholders in docker-compose.yml
-- several lines read REPLACE_ME, replace them with appropriate values
+Replace placeholder db name in docker-compose.yml (optional)
+- several lines read my_db, replace them with a new name if desired. (must ensure this is done before initialization of docker volumes, otherwise you will have to remove the volumes to trigger re-initialization)
 
 *Not sure why we need this next step, but it doesn't work without it*
 
@@ -34,4 +36,16 @@ You can now view the application at the following URLs
 
  - API: localhost:8080
 
-author: Darius DeSpain (gihub user: darius-despain)
+
+## Setup Troubleshooting
+
+- If you get the message, ```PostgreSQL Database directory appears to contain a database; Skipping initialization```, followed by the error, ``` FATAL:  database "[db name]" does not exist```, then you likely changed the name of the database, which is fine, but you need to re-initialize the database now to make the new name take effect.
+
+  - remove the volume from docker, this will trigger re-initialization. The first way uses compose down and will destroy the volume after it is finished.
+
+        docker-compose down --volumes
+
+  - another method for removing the volume manually
+
+        docker volume ls
+        docker volume rm [volumeName]
