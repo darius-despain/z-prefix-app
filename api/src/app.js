@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const bcrypt = require('bcryptjs');
 
 app.use(cors());
 
@@ -8,22 +9,237 @@ const env = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[env]
 const knex = require('knex')(config)
 
-app.get('/', (request, response) => {
-    console.log(`servicing GET for /`);
-    response.set("Access-Control-Allow-Origin", "*");
-    response.status(200).send('App root route running');
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  console.log(`servicing GET for /`);
+  res.set("Access-Control-Allow-Origin", "*");
+  res.status(200).send('App root route running');
 })
 
-app.get('/authors', (request, response) => {
-    console.log(`servicing GET for /authors`);
-    knex('app_authors')
-        .select('*')
-        .then(authorRecords => {
-            let responseData = authorRecords.map(author => ({ firstName: author.first_name, lastName: author.last_name}));
-            response.status(200).send(responseData)
+app.get('/posts', (req, res) => {
+  console.log(`servicing GET for /posts`);
+  knex('posts')
+    .join('users', 'users.id', '=', 'posts.user_id')
+    .select('posts.id as id',
+      'posts.title as title',
+      'posts.content as content',
+      'users.username as author',
+      'posts.created_at as created_at'
+    )
+    .then(data => {
+      res.set("Access-Control-Allow-Origin", "*");
+      res.status(200).send(data);
+    })
+})
+
+app.get('/posts/:postId', (req, res) => {
+  let { postId } = req.params;
+  // console.log(params)
+  console.log(`servicing GET for /posts/${postId}`);
+
+  knex('posts')
+  .join('users', 'users.id', '=', 'posts.user_id')
+  .select('posts.id as id',
+      'posts.title as title',
+      'posts.content as content',
+      'users.username as author',
+      'posts.created_at as created_at'
+    )
+    .where('posts.id', '=', postId)
+    .then(data => {
+      if(data.length > 0) {
+        res.set("Access-Control-Allow-Origin", "*");
+        res.status(200).send(data);
+      } else {
+        res.status(404).send()
+      }
+    })
+})
+
+app.post('/posts/user/:userId', async (req, res) => {
+  let { userId } = req.params;
+  console.log(`servicing POST for /posts/user/${userId}`);
+  let body = req.body;
+  let validreq = false;
+  let validUser = false;
+
+  let keys = ['title', 'content', 'created_at'];
+
+  if (body[keys[0]] && body[keys[1]] && body[keys[2]]) {
+    if(body.created_at.charAt(10) === 'T' && body.created_at.charAt(body.created_at.length - 1) === 'Z') {
+      validreq = true;
+      // console.log('Valid req', validreq)
+    }
+  }
+
+  if(userId) {
+    await knex('users')
+      .select('*')
+      .where('users.id', '=', userId)
+      .then(data => {
+        if (data.length > 0) {
+          validUser = true;
+        } else {
+          validUser = false;
+        }
+      })
+  }
+
+  let filteredBody = {
+    title: body.title,
+    content: body.content,
+    user_id: userId,
+    created_at: body.created_at,
+  }
+
+  if(validUser && validreq) {
+    knex('posts')
+      .returning(['id', 'title', 'content', 'user_id', 'created_at'])
+      .insert(filteredBody)
+      .then(data => {
+        res.set("Access-Control-Allow-Origin", "*");
+        res.status(200).json(data);
+      })
+  } else {
+    res.status(404).send()
+  }
+})
+
+app.patch('/posts/:postId', async (req, res) => {
+  let { postId } = req.params;
+  console.log(`servicing PATCH for /posts/${postId}`);
+  let body = req.body;
+  let validreq = false;
+
+  let keys = ['title', 'content', 'created_at'];
+
+  if (body[keys[0]] || body[keys[1]] || body[keys[2]]) {
+    if(body[keys[2]]){
+      if(body.created_at.charAt(10) === 'T' && body.created_at.charAt(body.created_at.length - 1) === 'Z') {
+        validreq = true;
+        // console.log('Valid req', validreq)
+      }
+    } else {
+      validreq = true;
+    }
+  }
+
+  if(validreq) {
+    knex('posts')
+      .where('posts.id', '=', postId)
+      .update(body, keys)
+      .then(() => {
+        knex('posts')
+          .select('*')
+          .where('posts.id', '=', postId)
+          .then(data => {
+            res.set("Access-Control-Allow-Origin", "*");
+            res.status(200).json(data);
+          })
         })
-
+      } else {
+    res.status(404).send()
+  }
 })
 
+app.delete('/posts/:postId', (req, res) => {
+  let { postId } = req.params;
+  console.log(`servicing DELETE for /posts/${postId}`);
+
+  knex('posts')
+    .where('id', '=', postId)
+    .del()
+    .then(data => {
+      res.set("Access-Control-Allow-Origin", "*");
+      res.status(200).json(`Number of records deleted: ${data}`)
+    })
+})
+
+//user registration endpoint
+app.post('/users', async (req, res) => {
+  console.log(`servicing POST for /users`);
+
+  let body = req.body;
+  let validreq = false;
+  let validUser = false;
+  let validUsername = false;
+  let filteredBody = {};
+  let hashedPassword;
+  let userNamePromise;
+
+  let keys = ['first_name', 'last_name', 'username', 'password'];
+
+  if (body[keys[0]] && body[keys[1]] && body[keys[2]] && body[keys[3]]) {
+    validreq = true;
+    hashedPassword = bcrypt.hash(body.password, 10);
+    filteredBody = {
+      'first_name': body[keys[0]],
+      'last_name': body[keys[1]],
+      'username': body[keys[2]],
+      'password': hashedPassword,
+    }
+    userNamePromise = knex('users')
+      .where('username', '=', body.username)
+      .select('*')
+      .then(data => {
+        if(data.length > 0) {
+          validUsername = false
+        } else {
+          validUsername = true;
+        }
+      })
+  }
+  await Promise.all([hashedPassword, userNamePromise]);
+  if(validreq && validUsername) {
+    knex('users')
+      .returning(['first_name', 'last_name', 'username'])
+      .insert(filteredBody)
+      .then(data => {
+        res.set("Access-Control-Allow-Origin", "*");
+        res.status(200).send(data)
+      })
+  } else if(!validUsername) {
+    res.status(404).send('username is taken');
+  } else  {
+    res.status(404).send('invalid request');
+  }
+} )
+
+//user login endpoint
+app.post('/login', async (req, res) => {
+  console.log(`servicing POST for /login`);
+
+  let body = req.body;
+  let validreq = false;
+
+  let keys = ['username', 'password'];
+
+  if(body[keys[0]] && body[keys[1]]) {
+    validreq = true;
+
+  }
+
+  knex('users')
+    .where('users.username', '=', body.username)
+    .select('password')
+    .then(data => {
+      if(data.length > 0) {
+        bcrypt.compare(body.password, data[0].password)
+        .then(results => {
+          if(results) {
+            res.set("Access-Control-Allow-Origin", "*");
+            res.status(200).send('authenticated')
+          } else {
+            res.set("Access-Control-Allow-Origin", "*");
+            res.status(400).send('invalid password')
+          }
+        })
+      } else {
+        res.status(404).send('invalid username');
+      }
+    })
+
+})
 module.exports = app;
 
