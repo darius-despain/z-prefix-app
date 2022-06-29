@@ -4,9 +4,11 @@ const config = {
         apiUrl: "http://localhost:8080"
     },
 
+    //replace with url of deployed api
     production: {
-        apiUrl: "https://bsdi-poc-api.herokuapp.com"
+        apiUrl: "https://[yourappName]-api.herokuapp.com"
     },
+
     test: {
         apiUrl: ''
     }

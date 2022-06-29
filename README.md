@@ -1,37 +1,37 @@
-TODO: 
-1. Create Volumes for API and UI - set up in docker compose
-1. Set up deployment pipeline
-1. Map node_modules as volume in docker-compose
-1. Set up Env variables for email and API names.
+# Full Stack Application scaffold
 
-TODO: NICE TO HAVE
-1. Web pack deploy on the pipeline
-1. break apart UI and API repositories with Manifest file repository
-1. install and run cypress tests
+This repo is designed to aid in speeding up development of a full-stack application by giving a running scaffold with a react front-end, express server, and datbase.
 
-# sdi-capstone-proof-of-concept
+## To set up application:
 
+clone this repository
 
-To set up application:
+    git clone <url>
 
-`git clone <url here>`
+Replace placeholders in docker-compose.yml
+- several lines read REPLACE_ME, replace them with appropriate values
 
-create volumes
-* db volume somehow
+*Not sure why we need this next step, but it doesn't work without it*
 
-* UI volume: 
-    * `docker service create  --mount 'type=bind,src=/Users/jeffhaddock/code/blended/capstone-proof/sdi-capstone-proof-of-concept/ui/src,target=/app/src'  --name capstone-ui-volume node:alpine`
+install dependencies for the api prior to docker-compose
 
-Need to include directions for how to 
-start up Docker containers and make 
-sure database is already created.
+    npm install
 
-to run a particular env for make command:
-`knex migrate:make --env local creat_about_table`
+install docker on your desktop if you havent already.
+- Visit https://docs.docker.com/get-docker/ for more information
 
-to run against the running database (if 'docker-compose up' has been executed)
-`knex migrate:latest --env local`
+check docker is running in the command line
 
+    docker -v
 
-Check Heroku Logs
-`heroku logs --tail -a bsdi-poc-api`
+build app using docker-compose (must be in root directory of this repo)
+
+    docker-compose up
+
+You can now view the application at the following URLs
+
+ - UI: localhost:3000
+
+ - API: localhost:8080
+
+author: Darius DeSpain (gihub user: darius-despain)
