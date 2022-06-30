@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
-
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <HeaderDiv>
-      <Logo> Blogtastic </Logo>
+      <Link to={`/`}>
+        <Logo> Blogtastic </Logo>
+      </Link>
       <StyledLoginButton variant="contained"> Login/Register </StyledLoginButton>
     </HeaderDiv>
   )

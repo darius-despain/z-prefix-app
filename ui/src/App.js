@@ -2,7 +2,9 @@ import React/* , { useEffect, useState} */ from 'react';
 // import config from './config'
 import Header from './components/Header'
 import Bloglist from './components/Bloglist'
+import Blogdetails from './components/Blogdetails'
 import styled from 'styled-components'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
 
@@ -20,8 +22,13 @@ const App = () => {
 
   return (
     <Background>
-      <Header />
-      <Bloglist />
+      <Router>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Bloglist />} />
+          <Route path='/posts/:id' element={<Blogdetails />} />
+        </Routes>
+      </Router>
     </Background>
   );
 }

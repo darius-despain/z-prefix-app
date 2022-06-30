@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 // import config from '../config'
 
@@ -10,16 +11,18 @@ import PropTypes from 'prop-types';
 const Blogcard = ({blog}) => {
 
   return (
-    <Background>
-      <BlogHeader>
-        <p>{blog.author}</p>
-        <BlogTitle>{blog.title}</BlogTitle>
-        <p>{blog.created_at}</p>
-      </BlogHeader>
-      <BlogBody>
-        <p>{blog.content.slice(0,100)}...</p>
-      </BlogBody>
-    </Background>
+    <Link to={`/posts/${blog.id}`}>
+      <Background>
+        <BlogHeader>
+          <p>{blog.author}</p>
+          <BlogTitle>{blog.title}</BlogTitle>
+          <p>{blog.created_at}</p>
+        </BlogHeader>
+        <BlogBody>
+          <p>{blog.content.slice(0,100)}...</p>
+        </BlogBody>
+      </Background>
+    </Link>
   )
 }
 
@@ -41,6 +44,8 @@ const Background = styled.div`
     "A A A A   A A A A   A A A A"
     "B B B B   B B B B   B B B B"
     "B B B B   B B B B   B B B B";
+
+
 `
 
 const BlogTitle = styled.div`

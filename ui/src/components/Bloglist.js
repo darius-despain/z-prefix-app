@@ -17,11 +17,9 @@ const Bloglist = () => {
 
   return (
     <Background>
-      <h1>All Posts</h1>
       <GridContainer>
-        <ul>
-          {blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)}
-        </ul>
+        <h1>All Posts</h1>
+        {blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)}
       </GridContainer>
     </Background>
   )
@@ -36,7 +34,10 @@ const Background = styled.div`
   justify-content: center;
   text-align: center;
   margin: 0px auto 0px auto;
-
+  a{
+    text-decoration: none;
+    color: white;
+  }
 `
 
 const GridContainer = styled.div`
