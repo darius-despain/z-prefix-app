@@ -39,7 +39,7 @@ app.get('/posts/:postId', (req, res) => {
   console.log(`servicing GET for /posts/${postId}`);
 
   //only runs if postId is a number. Will crash if runs with a non-integer
-  if(parseInt(postId) !== NaN){
+  if(!isNaN(parseInt(postId))){
     knex('posts')
     .join('users', 'users.id', '=', 'posts.user_id')
     .select('posts.id as id',
