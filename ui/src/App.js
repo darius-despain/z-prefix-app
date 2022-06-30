@@ -2,7 +2,7 @@ import React/* , { useEffect, useState} */ from 'react';
 // import config from './config'
 import Header from './components/Header'
 import Bloglist from './components/Bloglist'
-// import Blogdetails from './components/Blogdetails'
+import Blogdetails from './components/Blogdetails'
 import Login from './components/Login'
 import CreateBlog from './components/CreateBlog'
 import styled from 'styled-components'
@@ -30,7 +30,7 @@ const App = () => {
             <Route path='/' element={<Bloglist />} />
             <Route path='/posts/all' element={<Bloglist />} />
             <Route path='/posts/new' element={<CreateBlog />} />
-            {/* <Route path='/posts/:id' element={<Blogdetails />} /> */}
+            <Route path='/posts/:id' element={<Blogdetails />} />
             <Route path='/login' element={<Login />} />
           </Routes>
         </Router>
