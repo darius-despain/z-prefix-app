@@ -65,7 +65,7 @@ const BlogBody = styled.div`
   grid-area: B;
   padding-left: 10px;
   padding-right: 10px;
-  padding-top: 30px;
+  padding-top: 15vmin
 `
 
 const DetailsContainer = styled.div`

@@ -19,7 +19,7 @@ const Blogcard = ({blog}) => {
           <p>{blog.created_at}</p>
         </BlogHeader>
         <BlogBody>
-          <p>{blog.content.slice(0,100)}...</p>
+          <p>{blog.content.slice(0,100)}{blog.content.length > 100 ? "..." : null}</p>
         </BlogBody>
       </Background>
     </Link>

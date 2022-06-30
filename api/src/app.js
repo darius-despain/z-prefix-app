@@ -84,9 +84,9 @@ app.get('/posts/user/:username', (req, res) => {
     })
 })
 
-app.post('/posts/user/:userName', async (req, res) => {
-  let { userName } = req.params;
-  console.log(`servicing POST for /posts/user/${userName}`);
+app.post('/posts/user/:username', async (req, res) => {
+  let { username } = req.params;
+  console.log(`servicing POST for /posts/user/${username}`);
   let body = req.body;
   let validreq = false;
   let validUser = false;
@@ -100,10 +100,10 @@ app.post('/posts/user/:userName', async (req, res) => {
     }
   }
 
-  if(userName) {
+  if(username) {
     await knex('users')
       .select('*')
-      .where('users.username', '=', userName)
+      .where('users.username', '=', username)
       .then(data => {
         if (data.length > 0) {
           validUser = true;
