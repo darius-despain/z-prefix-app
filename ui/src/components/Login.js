@@ -28,6 +28,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let error = false;
+
     //reset all feedback for each submit
     setFormFeedback('')
     setFormFeedback2('')
@@ -59,12 +60,9 @@ const Login = () => {
       })
 
       if(res.status === 200) {
-        // console.log('success!', await res.text())
         if(await res.text() === 'authenticated') {
           context.setters.setIsLoggedIn(true);
           context.setters.setUsername(inputUsername);
-          // console.log(res.status, body)
-          nav('/')
         }
       } else if(res.status === 404){
         setFailedFeedback('username could not be found!')
