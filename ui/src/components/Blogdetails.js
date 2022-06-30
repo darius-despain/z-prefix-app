@@ -1,9 +1,11 @@
-import React , { useEffect, useState} from 'react'
-import styled from 'styled-components'
-import config from '../config'
+import React , { useEffect, useState, useContext } from 'react';
+import styled from 'styled-components';
+import config from '../config';
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
-import { useParams } from 'react-router-dom'
-import { GrEdit } from "react-icons/gr";
+import { useParams, useNavigate } from 'react-router-dom';
+import { MdEdit } from "react-icons/md";
+import { HiTrash } from "react-icons/hi";
+import { BlogContext } from '../BlogContext';
 
 const Blogdetails = () => {
 
@@ -13,7 +15,10 @@ const Blogdetails = () => {
     created_at: '',
     content: '',
   });
+  let {values} = useContext(BlogContext);
+  let [editView, setEditView] = useState(false);
   let { id } = useParams();
+  let nav = useNavigate();
 
   useEffect(() => {
     fetch(ApiUrl + `/posts/${id}`)
@@ -22,10 +27,27 @@ const Blogdetails = () => {
       .catch(err => console.log(err))
   }, []);
 
+  const deletePost = () => {
+    fetch(`${ApiUrl}/posts/${id}`, {method: 'DELETE'})
+      .then((res) => {
+        if(res.status === 200) {
+          nav('/');
+        } else {
+          window.alert('an error has occurred');
+        }
+      })
+  }
+  const options = (
+    <OptionsContainer>
+      <EditButton onClick={() => setEditView(!editView)}/>
+      <TrashButton onClick={deletePost}/>
+    </OptionsContainer>
+   );
+
   return (
     <Background>
       <DetailsContainer>
-        <GrEdit/>
+        {(values.isLoggedIn && Blogdetails.author === values.username) ? options : null}
         <BlogHeader>
           <p>Author: {Blogdetails.author}</p>
           <BlogTitle>Title: {Blogdetails.title}</BlogTitle>
@@ -41,6 +63,37 @@ const Blogdetails = () => {
 }
 
 export default Blogdetails;
+
+const EditButton = styled(MdEdit)`
+  &&{
+    color: white;
+    margin: 0px 20vw auto auto;
+    position: absolute;
+    right: 0px;
+  }
+  &&:hover{
+    cursor: pointer;
+    color: #00121c;
+  }
+`
+
+const TrashButton = styled(HiTrash)`
+  &&{
+    color: white;
+    margin: 0px 25vw auto auto;
+    position: absolute;
+    right: 0px;
+  }
+  &&:hover{
+    cursor: pointer;
+    color: #00121c;
+  }
+`
+
+const OptionsContainer = styled.div`
+  display: grid;
+  margin: 20px;
+`
 
 const Background = styled.div`
   background-color: #00121C;

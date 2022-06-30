@@ -1,10 +1,10 @@
-import React, {useState, useContext} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import {Button} from '@mui/material'
-import {Link, useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
 import config from '../config'
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
-import {BlogContext} from '../BlogContext'
+import { BlogContext } from '../BlogContext'
 
 const Login = () => {
 
@@ -17,6 +17,13 @@ const Login = () => {
 
   const nav = useNavigate();
   const context = useContext(BlogContext);
+
+  useEffect(() => {
+    if(context.values.isLoggedIn === true){
+      window.alert("You are logged in! Redirecting to home page")
+      nav('/')
+    }
+  }, [context.values.isLoggedIn])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,16 +72,16 @@ const Login = () => {
         setFailedFeedback('incorrect password!')
       }
     }
-
-
   }
+
+
 
   return (
     <Background>
       <GridContainer>
         <h1>Blogtastic</h1>
         <h2>Welcome!</h2>
-        <form action='/' method='get'>
+        <form action='/' method='get' onSubmit={handleSubmit} >
           <FormContainer>
             <Feedback>{formFeedback}</Feedback>
             <Feedback>{formFeedback2}</Feedback>
@@ -100,7 +107,7 @@ const Login = () => {
             value={inputPassword}
             onChange={e => {setInputPassword(e.target.value)}}
             />
-            <StyledLoginButton variant="contained" onClick={handleSubmit}> Login </StyledLoginButton>
+            <StyledLoginButton variant="contained" type="submit"> Login </StyledLoginButton>
           </FormContainer>
         </form>
         <p><Link to={'/register'}>Don&apos;t have an account? Register here</Link></p>
