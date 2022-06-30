@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import config from '../config'
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
 import { useParams } from 'react-router-dom'
+import { GrEdit } from "react-icons/gr";
 
 const Blogdetails = () => {
 
@@ -24,6 +25,7 @@ const Blogdetails = () => {
   return (
     <Background>
       <DetailsContainer>
+        <GrEdit/>
         <BlogHeader>
           <p>Author: {Blogdetails.author}</p>
           <BlogTitle>Title: {Blogdetails.title}</BlogTitle>
