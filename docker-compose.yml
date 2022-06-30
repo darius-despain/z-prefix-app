@@ -53,3 +53,4 @@ services:
       - type: bind
         source: ./ui/src
         target: /app/src
+    command: npm run start:dev
