@@ -18,8 +18,8 @@
     "styled-components": "^5.3.5"
   },
   "scripts": {
-    "start:dev": "react-scripts start",
-    "start": "serve -s build",
+    "heroku-prebuild": "npm install -g serve",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
