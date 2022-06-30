@@ -1,33 +1,70 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import { Link } from 'react-router-dom'
+import {BlogContext} from '../BlogContext'
 
 const Header = () => {
+  let navLinks = null;
+
+  const {values} = useContext(BlogContext);
+
+  if(values.isLoggedIn === true){
+    navLinks = (
+      <>
+        <Link to={'/posts/all'}>
+          <FirstButtonWrapper>
+            <StyledButton variant="contained">All Posts</StyledButton>
+          </FirstButtonWrapper>
+        </Link>
+        <Link to={'/posts/new'}>
+          <SecondButtonWrapper>
+            <StyledButton variant="contained">Create Post</StyledButton>
+          </SecondButtonWrapper>
+        </Link>
+      </>
+    );
+  } else {
+    navLinks = (
+      <Link to={'/Login'} >
+        <FirstButtonWrapper>
+          <StyledButton variant="contained"> Login/Register </StyledButton>
+        </FirstButtonWrapper>
+      </Link>
+    );
+  }
   return (
     <HeaderDiv>
       <Link to={`/`}>
         <Logo> Blogtastic </Logo>
       </Link>
-      <StyledLoginButton variant="contained"> Login/Register </StyledLoginButton>
+      {navLinks}
     </HeaderDiv>
   )
 }
 
 export default Header;
 
-const StyledLoginButton = styled(Button)`
+const StyledButton = styled(Button)`
   &&{
     background-color: #002439;
-    margin: 23px 50px auto auto;
     height: 50px;
     width: 175px;
-    position: absolute;
-    right: 0px;
+
   }
   &&:hover {
     background-color: #2b659b;
   }
+`
+const FirstButtonWrapper = styled.div`
+  margin: 23px 50px auto auto;
+  position: absolute;
+  right: 0px;
+`
+const SecondButtonWrapper = styled.div`
+  margin: 23px 235px auto auto;
+  position: absolute;
+  right: 0px;
 `
 
 const HeaderDiv = styled.div`

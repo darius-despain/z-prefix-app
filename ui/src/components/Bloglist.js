@@ -1,24 +1,38 @@
-import React , { useEffect, useState} from 'react'
+import React , { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import config from '../config'
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
 import Blogcard from './Blogcard'
+import {BlogContext} from '../BlogContext'
+import {useLocation} from 'react-router-dom'
 
 const Bloglist = () => {
 
+  const {values } = useContext(BlogContext);
   let [blogList, setBlogList] = useState([]);
+  let [titleText, setTitleText] = useState('All Posts');
+  let location = useLocation();
 
   useEffect(() => {
-    fetch(ApiUrl + "/posts")
+    if(values.isLoggedIn === true && location.pathname === '/' ) {
+      fetch(`${ApiUrl}/posts/user/${values.username}`)
       .then(response => response.json())
       .then(data => setBlogList(data))
       .catch(err => console.log(err))
-  }, []);
+      setTitleText("My Posts")
+    } else {
+      fetch(ApiUrl + "/posts")
+        .then(response => response.json())
+        .then(data => setBlogList(data))
+        .catch(err => console.log(err))
+        setTitleText("All Posts")
+    }
+  }, [location]);
 
   return (
     <Background>
       <GridContainer>
-        <h1>All Posts</h1>
+        <h1>{titleText}</h1>
         {blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)}
       </GridContainer>
     </Background>

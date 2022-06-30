@@ -38,6 +38,33 @@ app.get('/posts/:postId', (req, res) => {
   // console.log(params)
   console.log(`servicing GET for /posts/${postId}`);
 
+  //only runs if postId is a number. Will crash if runs with a non-integer
+  if(parseInt(postId) !== NaN){
+    knex('posts')
+    .join('users', 'users.id', '=', 'posts.user_id')
+    .select('posts.id as id',
+        'posts.title as title',
+        'posts.content as content',
+        'users.username as author',
+        'posts.created_at as created_at'
+      )
+    .where('posts.id', '=', postId)
+    .then(data => {
+      if(data.length > 0) {
+        res.set("Access-Control-Allow-Origin", "*");
+        res.status(200).send(data);
+      } else {
+        res.status(404).send()
+      }
+    })
+  }
+})
+
+app.get('/posts/user/:username', (req, res) => {
+  let { username } = req.params;
+  // console.log(params)
+  console.log(`servicing GET for /posts/user/${username}`);
+
   knex('posts')
   .join('users', 'users.id', '=', 'posts.user_id')
   .select('posts.id as id',
@@ -46,7 +73,7 @@ app.get('/posts/:postId', (req, res) => {
       'users.username as author',
       'posts.created_at as created_at'
     )
-    .where('posts.id', '=', postId)
+    .where('users.username', '=', username)
     .then(data => {
       if(data.length > 0) {
         res.set("Access-Control-Allow-Origin", "*");
@@ -57,13 +84,13 @@ app.get('/posts/:postId', (req, res) => {
     })
 })
 
-app.post('/posts/user/:userId', async (req, res) => {
-  let { userId } = req.params;
-  console.log(`servicing POST for /posts/user/${userId}`);
+app.post('/posts/user/:userName', async (req, res) => {
+  let { userName } = req.params;
+  console.log(`servicing POST for /posts/user/${userName}`);
   let body = req.body;
   let validreq = false;
   let validUser = false;
-
+  let userId = 0;
   let keys = ['title', 'content', 'created_at'];
 
   if (body[keys[0]] && body[keys[1]] && body[keys[2]]) {
@@ -73,13 +100,14 @@ app.post('/posts/user/:userId', async (req, res) => {
     }
   }
 
-  if(userId) {
+  if(userName) {
     await knex('users')
       .select('*')
-      .where('users.id', '=', userId)
+      .where('users.username', '=', userName)
       .then(data => {
         if (data.length > 0) {
           validUser = true;
+          userId = data[0].id
         } else {
           validUser = false;
         }
