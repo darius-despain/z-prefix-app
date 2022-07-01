@@ -29,9 +29,9 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Bloglist />} />
             <Route path='/posts/all' element={<Bloglist />} />
-            <Route path='/posts/new' element={<CreateBlog />} />
+            {/* <Route path='/posts/new' element={<CreateBlog />} /> */}
             <Route path='/posts/:id' element={<Blogdetails />} />
-            <Route path='/login' element={<Login />} />
+            {/* <Route path='/login' element={<Login />} /> */}
           </Routes>
         </Router>
       </Background>
