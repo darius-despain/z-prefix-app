@@ -25,17 +25,19 @@ const Blogdetails = () => {
   let [title, setTitle] = useState('');
   let [content, setContent] = useState('');
 
-  let {values} = useContext(BlogContext);
+  let { values, setters } = useContext(BlogContext);
   let { id } = useParams();
   let nav = useNavigate();
 
   useEffect(() => {
+    setters.setIsLoading(true);
     fetch(ApiUrl + `/posts/${id}`)
       .then(response => response.json())
       .then(data => {
         setBlogdetails(data[0])
         setTitle(data[0].title)
         setContent(data[0].content)
+        setTimeout(() => setters.setIsLoading(false), 500)
       })
       .catch(err => console.log(err))
   }, [editView]);
@@ -112,17 +114,19 @@ const Blogdetails = () => {
    );
 
    const staticBody = (
-    <>
-      <BlogHeader>
+      values.isLoading ? <img src="https://thumbs.gfycat.com/DemandingLegalFeline-max-1mb.gif" width="240px" alt="loading" /> : (
+      <>
+       <BlogHeader>
         <p>Author: {Blogdetails.author}</p>
         <BlogTitle>Title: {Blogdetails.title}</BlogTitle>
         <p>Date Created: {Blogdetails.created_at}</p>
-      </BlogHeader>
-      <BlogBody>
-        Content:
-        <p>{Blogdetails.content}</p>
-      </BlogBody>
-    </>
+        </BlogHeader>
+        <BlogBody>
+          Content:
+          <p>{Blogdetails.content}</p>
+        </BlogBody>
+      </>
+    )
    )
 
 
@@ -167,9 +171,12 @@ const Blogdetails = () => {
   return (
     <Background>
       <DetailsContainer>
-        {(values.isLoggedIn && (Blogdetails.author === values.username)) ? options : null}
-
-        {editView ? editBody : staticBody }
+      { values.isLoading ? <img src="https://thumbs.gfycat.com/DemandingLegalFeline-max-1mb.gif" width="240px" alt="loading" /> : (
+        <>
+          {(values.isLoggedIn && (Blogdetails.author === values.username)) ? options : null}
+          { editView ? editBody : staticBody }
+        </>
+      )}
 
       </DetailsContainer>
     </Background>

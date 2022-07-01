@@ -7,16 +7,19 @@ const BlogContext = React.createContext();
 const AppProvider = ({ children }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [username, setUsername] = useState('')
   // const [userId, setUserId] = useState(0)
   const values = {
     isLoggedIn,
+    isLoading,
     username,
     // userId
   }
 
   const setters = {
     setIsLoggedIn,
+    setIsLoading,
     setUsername,
     // setUserId
   }

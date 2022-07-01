@@ -8,22 +8,23 @@ import {useLocation} from 'react-router-dom'
 
 const Bloglist = () => {
 
-  const {values } = useContext(BlogContext);
+  const { values, setters } = useContext(BlogContext);
   let [blogList, setBlogList] = useState([]);
   let [titleText, setTitleText] = useState('All Posts');
   let location = useLocation();
 
   useEffect(() => {
+    setters.setIsLoading(true)
     if(values.isLoggedIn === true && location.pathname === '/' ) {
       fetch(`${ApiUrl}/posts/user/${values.username}`)
       .then(response => response.json())
-      .then(data => setBlogList(data))
+      .then(data => {setBlogList(data); setTimeout(() => setters.setIsLoading(false), 500)})
       .catch(err => console.log(err))
       setTitleText("My Posts")
     } else {
       fetch(ApiUrl + "/posts")
         .then(response => response.json())
-        .then(data => setBlogList(data))
+        .then(data => {setBlogList(data); setTimeout(() => setters.setIsLoading(false), 500)})
         .catch(err => console.log(err))
         setTitleText("All Posts")
     }
@@ -33,7 +34,9 @@ const Bloglist = () => {
     <Background>
       <GridContainer>
         <h1>{titleText}</h1>
-        {blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)}
+        {values.isLoading ? <img src="https://thumbs.gfycat.com/DemandingLegalFeline-max-1mb.gif" width="240px" alt="loading" /> : (
+          blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)
+        )}
       </GridContainer>
     </Background>
   )
