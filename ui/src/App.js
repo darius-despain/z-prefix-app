@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Bloglist from './components/Bloglist'
 import Blogdetails from './components/Blogdetails'
 import Login from './components/Login'
+import Register from './components/Register'
 import CreateBlog from './components/CreateBlog'
 import styled from 'styled-components'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -32,6 +33,7 @@ const App = () => {
             <Route path='/posts/new' element={<CreateBlog />} />
             <Route path='/posts/:id' element={<Blogdetails />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
           </Routes>
         </Router>
       </Background>
