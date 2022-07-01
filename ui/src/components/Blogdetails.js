@@ -2,7 +2,7 @@ import React , { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import config from '../config';
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
-import { useParams, /* useNavigate */ } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { HiTrash } from "react-icons/hi";
 import { BlogContext } from '../BlogContext';
@@ -15,10 +15,10 @@ const Blogdetails = () => {
     created_at: '',
     content: '',
   });
-  // let [editView, setEditView] = useState(false);
+  let [editView, setEditView] = useState(false);
   let {values} = useContext(BlogContext);
   let { id } = useParams();
-  // let nav = useNavigate();
+  let nav = useNavigate();
 
   useEffect(() => {
     fetch(ApiUrl + `/posts/${id}`)
@@ -27,28 +27,28 @@ const Blogdetails = () => {
       .catch(err => console.log(err))
   }, []);
 
-  // const deletePost = () => {
-  //   fetch(`${ApiUrl}/posts/${id}`, {method: 'DELETE'})
-  //     .then((res) => {
-  //       if(res.status === 200) {
-  //         nav('/');
-  //       } else {
-  //         window.alert('an error has occurred');
-  //       }
-  //     })
-  // }
+  const deletePost = () => {
+    fetch(`${ApiUrl}/posts/${id}`, {method: 'DELETE'})
+      .then((res) => {
+        if(res.status === 200) {
+          nav('/');
+        } else {
+          window.alert('an error has occurred');
+        }
+      })
+  }
 
   const options = (
     <OptionsContainer>
-      <EditButton /* onClick={() => setEditView(!editView)} *//>
-      <TrashButton /* onClick={deletePost} *//>
+      <EditButton onClick={() => setEditView(!editView)}/>
+      <TrashButton onClick={deletePost}/>
     </OptionsContainer>
    );
 
   return (
     <Background>
       <DetailsContainer>
-        {(values.isLoggedIn && Blogdetails.author === values.username) ? options : null}
+        {(values.isLoggedIn && (Blogdetails.author === values.username)) ? options : null}
         <BlogHeader>
           <p>Author: {Blogdetails.author}</p>
           <BlogTitle>Title: {Blogdetails.title}</BlogTitle>
