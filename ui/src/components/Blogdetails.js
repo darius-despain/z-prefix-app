@@ -221,7 +221,7 @@ const Background = styled.div`
 `
 
 const BlogTitle = styled.div`
-  font-size: 48px;
+  font-size: 28px;
 `
 
 const BlogHeader = styled.div`
