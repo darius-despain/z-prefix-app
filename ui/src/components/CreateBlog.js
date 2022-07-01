@@ -154,8 +154,9 @@ const DetailsContainer = styled.div`
 
 const StyledButton = styled(Button)`
   &&{
-    background-color: #3A87CF;
-    margin-top: 20px;
+    background-color: #7E8C9B;
+    margin: 30px auto 10px auto;
+    width: 150px;
   }
   &&:hover {
     background-color: #002439;

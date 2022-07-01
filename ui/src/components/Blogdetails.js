@@ -95,9 +95,9 @@ const Blogdetails = () => {
  }
   const options = (
     <OptionsContainer>
-      <EditButton onClick={() => {
+      <EditButton size={'2em'} onClick={() => {
         if(editView && formChanged ) {
-          if(confirm('Are you sure you want to continue out of edit mode?')) {
+          if(confirm('Are you sure you want to continue out of edit mode?\nYour work will be lost')) {
             setEditView(false);
           }
         } else {
@@ -107,7 +107,7 @@ const Blogdetails = () => {
 
       }
       }/>
-      <TrashButton onClick={deletePost}/>
+      <TrashButton size={'2em'} onClick={deletePost}/>
     </OptionsContainer>
    );
 
@@ -156,8 +156,6 @@ const Blogdetails = () => {
                 value={content}
                 onChange={e => {setContent(e.target.value); setFormChanged(true)}}
               />
-              {/* <p>Your post will have a timestamp of: </p>
-              <p>{created_at.toString()}</p> */}
               <StyledButton variant="contained" onClick={handleSubmit}> Submit </StyledButton>
             </FormContainer>
               <p>Note: Editing this post will not change the timestamp</p>
@@ -249,13 +247,15 @@ const DetailsContainer = styled.div`
 
 const StyledButton = styled(Button)`
   &&{
-    background-color: #3A87CF;
-    margin-top: 20px;
+    background-color: #7E8C9B;
+    margin: 10px auto 10px auto;
+    width: 150px;
   }
   &&:hover {
     background-color: #002439;
   }
 `
+
 const StyledInput = styled.input`
   &&{
     background-color: #002439;
@@ -280,7 +280,7 @@ const StyledTextarea = styled.textarea`
 
 const FormContainer = styled.div`
   display: grid;
-  grid-template-rows: 15px 15px 40px 30px 40px 100px 15px 15px;
+  grid-template-rows: 15px 15px 40px 30px 40px 100px 50px 15px;
   justify-content: center;
   width: 50vw;
   grid-gap: 10px;
