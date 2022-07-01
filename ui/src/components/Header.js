@@ -12,15 +12,20 @@ const Header = () => {
   if(values.isLoggedIn === true){
     navLinks = (
       <>
-        <Link to={'/posts/all'}>
+        <Link to={'/profile'}>
           <FirstButtonWrapper>
-            <StyledButton variant="contained">All Posts</StyledButton>
+            <StyledButton variant="contained">Profile</StyledButton>
           </FirstButtonWrapper>
         </Link>
-        <Link to={'/posts/new'}>
+        <Link to={'/posts/all'}>
           <SecondButtonWrapper>
-            <StyledButton variant="contained">Create Post</StyledButton>
+            <StyledButton variant="contained">All Posts</StyledButton>
           </SecondButtonWrapper>
+        </Link>
+        <Link to={'/posts/new'}>
+          <ThirdButtonWrapper>
+            <StyledButton variant="contained">Create Post</StyledButton>
+          </ThirdButtonWrapper>
         </Link>
       </>
     );
@@ -63,6 +68,11 @@ const FirstButtonWrapper = styled.div`
 `
 const SecondButtonWrapper = styled.div`
   margin: 23px 235px auto auto;
+  position: absolute;
+  right: 0px;
+`
+const ThirdButtonWrapper = styled.div`
+  margin: 23px 420px auto auto;
   position: absolute;
   right: 0px;
 `

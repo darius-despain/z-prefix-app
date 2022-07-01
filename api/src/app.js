@@ -221,7 +221,7 @@ app.post('/users', async (req, res) => {
   await Promise.all([hashedPassword, userNamePromise]);
   if(validreq && validUsername) {
     knex('users')
-      .returning(['first_name', 'last_name', 'username'])
+      .returning(['id', 'first_name', 'last_name', 'username'])
       .insert(filteredBody)
       .then(data => {
         res.set("Access-Control-Allow-Origin", "*");
@@ -240,12 +240,10 @@ app.post('/login', async (req, res) => {
 
   let body = req.body;
   let validreq = false;
-
   let keys = ['username', 'password'];
 
   if(body[keys[0]] && body[keys[1]]) {
     validreq = true;
-
   }
 
   if(validreq) {
@@ -272,6 +270,46 @@ app.post('/login', async (req, res) => {
     res.status(404).send('invalid request');
   }
 
+})
+//user profile get endpoint
+app.get('/users/:username', (req, res) => {
+  let { username } = req.params;
+  console.log(`servicing GET for /users/${username}`);
+
+  knex('users')
+    .where('username', '=', username)
+    .select(
+      'id',
+      'first_name',
+      'last_name',
+      'username'
+    )
+    .then(data => {
+      if(data.length > 0) {
+        res.set("Access-Control-Allow-Origin", "*");
+        res.status(200).send(data);
+      } else {
+        res.status(404).send()
+      }
+    })
+})
+
+//delete user endpoint
+app.delete('/users/:id', (req, res) => {
+  let { id } = req.params;
+  console.log(`servicing DELETE for /users/${id}`);
+  knex('posts')
+    .where('user_id', '=', id)
+    .del()
+    .then( () => {
+      knex('users')
+        .where('users.id', '=', id)
+        .del()
+        .then(data => {
+          res.set("Access-Control-Allow-Origin", "*");
+          res.status(200).json(`Number of records deleted: ${data}`)
+        })
+    })
 })
 module.exports = app;
 
