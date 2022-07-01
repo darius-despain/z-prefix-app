@@ -15,8 +15,8 @@ const Blogdetails = () => {
     created_at: '',
     content: '',
   });
+  // let [editView, setEditView] = useState(false);
   let {values} = useContext(BlogContext);
-  let [editView, setEditView] = useState(false);
   let { id } = useParams();
   // let nav = useNavigate();
 
@@ -40,7 +40,7 @@ const Blogdetails = () => {
 
   const options = (
     <OptionsContainer>
-      <EditButton onClick={() => setEditView(!editView)}/>
+      <EditButton /* onClick={() => setEditView(!editView)} *//>
       <TrashButton /* onClick={deletePost} *//>
     </OptionsContainer>
    );
