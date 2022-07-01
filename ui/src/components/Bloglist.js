@@ -16,17 +16,17 @@ const Bloglist = () => {
   useEffect(() => {
     setters.setIsLoading(true)
     if(values.isLoggedIn === true && location.pathname === '/' ) {
+      setTitleText("My Posts")
       fetch(`${ApiUrl}/posts/user/${values.username}`)
       .then(response => response.json())
       .then(data => {setBlogList(data); setTimeout(() => setters.setIsLoading(false), 500)})
-      .catch(err => console.log(err))
-      setTitleText("My Posts")
+      .catch(err => {console.log(`err: `,err); setTimeout(() => setters.setIsLoading(false), 500)})
     } else {
+      setTitleText("All Posts")
       fetch(ApiUrl + "/posts")
         .then(response => response.json())
         .then(data => {setBlogList(data); setTimeout(() => setters.setIsLoading(false), 500)})
-        .catch(err => console.log(err))
-        setTitleText("All Posts")
+        .catch(err => {console.log(`err: `, err); setTimeout(() => setters.setIsLoading(false), 500)})
     }
   }, [location]);
 
@@ -35,7 +35,7 @@ const Bloglist = () => {
       <GridContainer>
         <h1>{titleText}</h1>
         {values.isLoading ? <img src="https://thumbs.gfycat.com/DemandingLegalFeline-max-1mb.gif" width="240px" alt="loading" /> : (
-          blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>)
+          blogList.length > 0 ? blogList.map(blog => <Blogcard key={blog.id} blog={blog}/>) : (<><h3>You don&apos;t have any posts! </h3> <p>Create one using the &apos;Create Post&apos; link above.</p></>)
         )}
       </GridContainer>
     </Background>

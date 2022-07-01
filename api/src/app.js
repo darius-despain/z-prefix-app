@@ -269,29 +269,90 @@ app.post('/login', async (req, res) => {
   } else {
     res.status(404).send('invalid request');
   }
-
 })
+
 //user profile get endpoint
 app.get('/users/:username', (req, res) => {
   let { username } = req.params;
   console.log(`servicing GET for /users/${username}`);
+  if(isNaN(parseInt(username))){
+    knex('users')
+      .where('username', '=', username)
+      .select(
+        'id',
+        'first_name',
+        'last_name',
+        'username'
+      )
+      .then(data => {
+        if(data.length > 0) {
+          res.set("Access-Control-Allow-Origin", "*");
+          res.status(200).send(data);
+        } else {
+          res.status(404).send()
+        }
+      })
+  } else {
+    console.log('invalid username')
+  }
+})
 
-  knex('users')
-    .where('username', '=', username)
-    .select(
-      'id',
-      'first_name',
-      'last_name',
-      'username'
-    )
-    .then(data => {
-      if(data.length > 0) {
+//update user profile endpoint
+app.patch('/users/:id', async (req, res) => {
+  let { id } = req.params;
+  console.log(`servicing PATCH for /users/${id}`);
+
+  let body = req.body;
+  let validreq = false;
+  let validUsername = true;
+  let filteredBody = {};
+  let hashedPassword;
+  let userNamePromise;
+  let keys = ['first_name', 'last_name', 'username', 'password'];
+  console.log(`body: `, body)
+  if (body[keys[0]] || body[keys[1]] || body[keys[2]] || body[keys[3]]) {
+    validreq = true;
+    if(body[keys[0]]){
+      filteredBody.first_name = body.first_name
+    }
+    if(body[keys[1]]){
+      filteredBody.last_name = body.last_name
+    }
+    if(body[keys[2]]){
+      userNamePromise = knex('users')
+        .where('username', '=', body.username)
+        .select('*')
+        .then(data => {
+          if(data.length > 0) {
+            validUsername = false
+          } else {
+            validUsername = true;
+            filteredBody.username = body.username;
+          }
+        })
+    }
+    if(body[keys[3]]){
+      hashedPassword = bcrypt.hash(body.password, 10).then((hash) => {
+        filteredBody.password = hash;
+      });
+    }
+  }
+  await Promise.all([hashedPassword, userNamePromise]);
+  console.log('filtered body: ', filteredBody);
+  if(validreq && validUsername) {
+    knex('users')
+      .where('users.id', '=', id)
+      .update(filteredBody)
+      .returning(['id', 'first_name', 'last_name', 'username'])
+      .then(data => {
         res.set("Access-Control-Allow-Origin", "*");
-        res.status(200).send(data);
-      } else {
-        res.status(404).send()
-      }
-    })
+        res.status(200).send(data)
+      })
+  } else if(!validUsername) {
+    res.status(404).send('username is taken');
+  } else  {
+    res.status(400).send('invalid request');
+  }
 })
 
 //delete user endpoint
@@ -311,5 +372,6 @@ app.delete('/users/:id', (req, res) => {
         })
     })
 })
+
 module.exports = app;
 

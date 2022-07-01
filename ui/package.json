@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start": "node --optimize_for_size --gc_interval=100 node_modules/.bin/react-scripts start",
+    "preinstall": "npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
