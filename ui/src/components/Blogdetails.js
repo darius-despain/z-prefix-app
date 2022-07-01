@@ -195,7 +195,6 @@ const EditButton = styled(MdEdit)`
   &&:hover{
     cursor: pointer;
     color: #00121c;
-    transform: scale(1.1);
   }
 `
 
@@ -209,7 +208,6 @@ const TrashButton = styled(HiTrash)`
   &&:hover{
     cursor: pointer;
     color: #00121c;
-    transform: scale(1.1);
   }
 `
 

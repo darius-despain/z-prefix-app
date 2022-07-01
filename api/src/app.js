@@ -199,6 +199,7 @@ app.post('/users', async (req, res) => {
 
   if (body[keys[0]] && body[keys[1]] && body[keys[2]] && body[keys[3]]) {
     validreq = true;
+    //bcrypt hash takes in salt length as the second argument. The next line salts + hashes the password all in one
     hashedPassword = bcrypt.hash(body.password, 10).then((hash) => {
       filteredBody = {
         'first_name': body[keys[0]],
