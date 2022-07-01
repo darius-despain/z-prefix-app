@@ -18,7 +18,7 @@
     "styled-components": "^5.3.5"
   },
   "scripts": {
-    "start": "node --optimize_for_size --max_old_space_size=4096 node_modules/.bin/react-scripts start",
+    "start": "node --optimize_for_size --max_old_space_size=512 node_modules/.bin/react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
