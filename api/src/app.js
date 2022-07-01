@@ -230,7 +230,7 @@ app.post('/users', async (req, res) => {
   } else if(!validUsername) {
     res.status(404).send('username is taken');
   } else  {
-    res.status(404).send('invalid request');
+    res.status(400).send('invalid request');
   }
 } )
 

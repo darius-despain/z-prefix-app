@@ -122,6 +122,7 @@ const StyledLoginButton = styled(Button)`
   &&{
     background-color: #3A87CF;
     margin-top: 20px;
+    font-weight: bold;
   }
   &&:hover {
     background-color: #002439;

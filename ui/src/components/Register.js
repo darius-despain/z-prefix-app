@@ -8,12 +8,15 @@ import { BlogContext } from '../BlogContext'
 
 const Register = () => {
 
+  const [inputFirstName, setInputFirstName] = useState('')
+  const [inputLastName, setInputLastName] = useState('')
   const [inputUsername, setInputUsername] = useState('')
   const [inputPassword, setInputPassword] = useState('')
   const [inputPassword2, setInputPassword2] = useState('')
-  const [formFeedback, setFormFeedback] = useState('')
-  const [formFeedback2, setFormFeedback2] = useState('')
-  const [successFeedback, setSuccessFeedback] = useState('')
+  const [firstNameFeedback, setFirstNameFeedback] = useState('')
+  const [lastNameFeedback, setLastNameFeedback] = useState('')
+  const [usernameFeedback, setUsernameFeedback] = useState('')
+  const [passwordFeedback, setPasswordFeedback] = useState('')
   const [failedFeedback, setFailedFeedback] = useState('')
 
   const nav = useNavigate();
@@ -31,46 +34,70 @@ const Register = () => {
     let error = false;
 
     //reset all feedback for each submit
-    setFormFeedback('')
-    setFormFeedback2('')
-    setSuccessFeedback('')
-    setFailedFeedback('')
+    setFirstNameFeedback('');
+    setLastNameFeedback('');
+    setUsernameFeedback('');
+    setPasswordFeedback('');
+    setFailedFeedback('');
 
-    if(inputUsername.length < 3) {
-      setFormFeedback('error: username must be at least 3 characters\n')
+    if(inputFirstName.length < 2) {
+      setFirstNameFeedback('error: first name must be at least 2 characters\n')
       error = true;
-    } else {
-      setFormFeedback('')
     }
-    if(inputPassword.length < 3) {
-      setFormFeedback2('error: password must be at least 3 characters\n')
+    if(inputLastName.length < 2) {
+      setLastNameFeedback('error: last name must be at least 2 characters\n')
       error = true;
-    } if(inputPassword !== inputPassword2) {
-      setFormFeedback2('error: passwords must match!\n')
-    }else {
-      setFormFeedback2('')
+    }
+    if(inputUsername.length < 3) {
+      setUsernameFeedback('error: username must be at least 3 characters\n')
+      error = true;
+    }
+    if(inputPassword.length < 4) {
+      setPasswordFeedback('error: password must be at least 3 characters\n')
+      error = true;
+    }
+    if(inputFirstName.length > 50) {
+      setFirstNameFeedback('error: first name must be less than 50 characters\n')
+      error = true;
+    }
+    if(inputLastName.length > 50) {
+      setLastNameFeedback('error: first name must be less than 50 characters\n')
+      error = true;
+    }
+    if(inputUsername.length > 50) {
+      setUsernameFeedback('error: first name must be less than 50 characters\n')
+      error = true;
+    }
+    if(inputPassword.length > 50) {
+      setPasswordFeedback('error: first name must be less than 50 characters\n')
+      error = true;
+    }
+    if(inputPassword !== inputPassword2) {
+      setPasswordFeedback('error: passwords must match!\n')
+      error = true;
     }
     if(!error) {
       let body = {
+        first_name: inputFirstName,
+        last_name: inputLastName,
         username: inputUsername,
         password: inputPassword
       }
 
-      let res = await fetch (`${ApiUrl}/Register`, {
+      let res = await fetch (`${ApiUrl}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       })
 
       if(res.status === 200) {
-        if(await res.text() === 'authenticated') {
-          context.setters.setIsLoggedIn(true);
-          context.setters.setUsername(inputUsername);
-        }
+        window.alert('Your account has been created. You will now be logged in')
+        context.setters.setIsLoggedIn(true);
+        context.setters.setUsername(inputUsername);
       } else if(res.status === 404){
-        setFailedFeedback('username could not be found!')
+        setFailedFeedback('username is taken!')
       } else if(res.status === 400){
-        setFailedFeedback('incorrect password!')
+        setFailedFeedback('invalid form registration. Rejected by server')
       }
     }
   }
@@ -82,47 +109,76 @@ const Register = () => {
       <GridContainer>
         <h1>Blogtastic</h1>
         <h2>Register</h2>
+        {/* <ul> Requirements:
+          <li>First and Last Name must be at least 2 characters</li>
+          <li>Username must be at least 3 characters and must be unique. You will be notified if the username is taken</li>
+          <li>Password must be at least 4 characters</li>
+          <li>Both password fields must match</li>
+        </ul> */}
         <form action='/' method='get' onSubmit={handleSubmit} >
           <FormContainer>
-            <Feedback>{formFeedback}</Feedback>
-            <Feedback>{formFeedback2}</Feedback>
+            <Feedback>{firstNameFeedback}</Feedback>
+            <Feedback>{lastNameFeedback}</Feedback>
+            <Feedback>{usernameFeedback}</Feedback>
+            <Feedback>{passwordFeedback}</Feedback>
+            <label htmlFor="firstName">
+                <Labels>First name:</Labels>
+            </label>
+            <StyledInput
+              type="text"
+              id="firstName"
+              placeholder="First"
+              name="text"
+              value={inputFirstName}
+              onChange={e => {setInputFirstName(e.target.value)}}
+            />
+            <label htmlFor="lastName">
+            <Labels>Last name:</Labels>
+            </label>
+            <StyledInput
+              type="text"
+              id="lastName"
+              placeholder="Last"
+              name="text"
+              value={inputLastName}
+              onChange={e => {setInputLastName(e.target.value)}}
+            />
             <label htmlFor="username">
                 <Labels>Username:</Labels>
             </label>
             <StyledInput
-            type="text"
-            id="username"
-            placeholder="enter your username here"
-            name="text"
-            value={inputUsername}
-            onChange={e => {setInputUsername(e.target.value)}}
+              type="text"
+              id="username"
+              placeholder="enter your username here"
+              name="text"
+              value={inputUsername}
+              onChange={e => {setInputUsername(e.target.value)}}
             />
             <label htmlFor="password1">
                 <Labels>Password:</Labels>
             </label>
             <StyledInput
-            type="password"
-            id="password1"
-            placeholder="enter your password here"
-            name="text"
-            value={inputPassword}
-            onChange={e => {setInputPassword(e.target.value)}}
+              type="password"
+              id="password1"
+              placeholder="enter your password here"
+              name="text"
+              value={inputPassword}
+              onChange={e => {setInputPassword(e.target.value)}}
             />
             <label htmlFor="password2">
                 <Labels>Re-Enter your Password:</Labels>
             </label>
             <StyledInput
-            type="password"
-            id="password2"
-            placeholder="re-enter your password here"
-            name="text"
-            value={inputPassword2}
-            onChange={e => {setInputPassword2(e.target.value)}}
+              type="password"
+              id="password2"
+              placeholder="re-enter your password here"
+              name="text"
+              value={inputPassword2}
+              onChange={e => {setInputPassword2(e.target.value)}}
             />
             <RegisterButton variant="contained" type="submit"> Register </RegisterButton>
           </FormContainer>
         </form>
-        <Success>{successFeedback}</Success>
         <Feedback>{failedFeedback}</Feedback>
       </GridContainer>
     </Background>
@@ -135,6 +191,8 @@ const RegisterButton = styled(Button)`
   &&{
     background-color: #3A87CF;
     margin-top: 20px;
+    color: black;
+    font-weight: bold;
   }
   &&:hover {
     background-color: #002439;
@@ -142,27 +200,25 @@ const RegisterButton = styled(Button)`
 `
 const StyledInput = styled.input`
   &&{
-    background-color: #002439;
-    color: white;
-    border-color: white;
+    background-color: #f0f0f0;
+    color: black;
+    border-color: black;
     border-width: 2px;
     border-radius: 10px;
   }
-  // &&:hover {
-  //   background-color: #002439;
-  // }
 `
 
 const Background = styled.div`
-  background-color: #00121C;
+  background-color: white;
   height: 90vh;
   width: 75vw;
   justify-content: center;
   text-align: center;
   margin: 0px auto 0px auto;
+  color: black;
   a{
     text-decoration: none;
-    color: white;
+    color: black;
   }
 `
 
@@ -173,7 +229,7 @@ const GridContainer = styled.div`
 `
 const FormContainer = styled.div`
   display: grid;
-  grid-template-rows: 15px 15px 40px 30px 40px 30px;
+  grid-template-rows: 10px 10px 10px 10px 40px 30px 40px 30px 40px 30px 40px 30px 40px 30px;
   justify-content: center;
   width: 50vw;
   grid-gap: 10px;
@@ -182,9 +238,9 @@ const FormContainer = styled.div`
 const Feedback = styled.p`
   color: red;
 `
-const Success = styled.p`
-  color: green;
-`
+// const Success = styled.p`
+//   color: green;
+// `
 
 const Labels = styled.p`
   padding-top: 15px;
