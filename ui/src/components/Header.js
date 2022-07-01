@@ -14,7 +14,8 @@ const Header = () => {
       <>
         <Link to={'/profile'}>
           <FirstButtonWrapper>
-            <StyledButton variant="contained">Profile</StyledButton>
+            <StyledButton variant="contained">Profile: {values.username}</StyledButton>
+
           </FirstButtonWrapper>
         </Link>
         <Link to={'/posts/all'}>
@@ -88,14 +89,18 @@ const HeaderDiv = styled.div`
 `
 
 const Logo = styled.div`
-  padding-top: 27px;
+  padding: 10px;
   text-align: center;
   color: white;
   width: 200px;
   justify-content: center;
   font-size: 42px;
-  margin: auto;
+  margin: 15px auto;
   position: absolute;
-  left: 0px;
-  padding-left: 20px;
+  left: 20px;
+  :hover{
+    transform: scale(1.05);
+    background-color: #002439;
+    border-radius: 4px;
+  }
 `

@@ -119,7 +119,7 @@ const Blogdetails = () => {
        <BlogHeader>
         <p>Author: {Blogdetails.author}</p>
         <BlogTitle>Title: {Blogdetails.title}</BlogTitle>
-        <p>Date Created: {Blogdetails.created_at}</p>
+        <p>Date Created: {Blogdetails.created_at.slice(0, 10)}</p>
         </BlogHeader>
         <BlogBody>
           Content:
@@ -195,6 +195,7 @@ const EditButton = styled(MdEdit)`
   &&:hover{
     cursor: pointer;
     color: #00121c;
+    transform: scale(1.1);
   }
 `
 
@@ -208,6 +209,7 @@ const TrashButton = styled(HiTrash)`
   &&:hover{
     cursor: pointer;
     color: #00121c;
+    transform: scale(1.1);
   }
 `
 
@@ -222,7 +224,8 @@ const Background = styled.div`
   width: 75vw;
   justify-content: center;
   text-align: center;
-  margin: 0px auto 0px auto;
+  margin: auto;
+  padding-top: 12vh;
 `
 
 const BlogTitle = styled.div`
@@ -230,23 +233,21 @@ const BlogTitle = styled.div`
 `
 
 const BlogHeader = styled.div`
-  grid-area: A;
   display: grid;
-  grid-template-columns: 150px auto 150px;
+  grid-template-columns: 200px auto 200px;
   padding-top: 10px;
   height: 50px;
 `
 
 const BlogBody = styled.div`
-  grid-area: B;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 15vmin
 `
 
 const DetailsContainer = styled.div`
-  padding: 150px 10px 50px 10px;
-  margin: 100px auto;
+  padding: 50px 10px 50px 10px;
+  margin: auto;
   background-color: #2B659B;
   width: 65vw;
   height: 55vh;

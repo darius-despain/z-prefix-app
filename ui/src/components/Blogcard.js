@@ -14,9 +14,9 @@ const Blogcard = ({blog}) => {
     <Link to={`/posts/${blog.id}`}>
       <Background>
         <BlogHeader>
-          <p>{blog.author}</p>
+          <p style={{"text-align":"left"}}>{blog.author}</p>
           <BlogTitle>{blog.title}</BlogTitle>
-          <p>{blog.created_at}</p>
+          <p style={{"text-align":"right"}}>{blog.created_at.slice(0, 10)}</p>
         </BlogHeader>
         <BlogBody>
           <p>{blog.content.slice(0,100)}{blog.content.length > 100 ? "..." : null}</p>
@@ -35,7 +35,7 @@ export default Blogcard;
 
 const Background = styled.div`
   background-color: #2B659B;
-  width: 75vw;
+  width: 70vw;
   justify-content: center;
   margin: 20px 0px 20px 0px;
   text-align: center;
@@ -44,20 +44,23 @@ const Background = styled.div`
     "A A A A   A A A A   A A A A"
     "B B B B   B B B B   B B B B"
     "B B B B   B B B B   B B B B";
-
-
+  :hover {
+    transform: scale(1.05);
+  }
 `
 
 const BlogTitle = styled.div`
   font-size: 24px;
+  margin: auto;
 `
 
 const BlogHeader = styled.div`
   grid-area: A;
   display: grid;
-  grid-template-columns: 100px auto 150px;
+  grid-template-columns: 150px auto 150px;
   padding-top: 10px;
   height: 50px;
+  margin: auto 5px auto 5px;
 `
 
 const BlogBody = styled.div`

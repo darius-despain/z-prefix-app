@@ -61,4 +61,5 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(auto-fill, auto);
   justify-content: center;
+  margin: auto;
 `

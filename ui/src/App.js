@@ -35,9 +35,11 @@ export default App;
 
 const Background = styled.div`
   background-color: #002439;
-  height: 100vh;
+  min-height:100vh;
   width: 100vw;
-  margin: 0px;
   color: white;
-  font-family: Arial
+  font-family: Arial;
+  background-position: center;
+  background-size: cover;
+  overflow: scroll;
 `

@@ -99,8 +99,8 @@ const CreateBlog = () => {
                 value={content}
                 onChange={e => {setContent(e.target.value)}}
               />
-              <p>Your post will have a timestamp of: </p>
-              <p>{created_at.toString()}</p>
+              <p>Your post will have a creation date of: </p>
+              <p>{created_at.toDateString()}</p>
               <StyledButton variant="contained" onClick={handleSubmit}> Submit </StyledButton>
             </FormContainer>
           </form>
