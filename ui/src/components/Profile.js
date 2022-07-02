@@ -304,26 +304,22 @@ const Background = styled.div`
   background-color: #00121C;
   height: 90vh;
   width: 75vw;
-  justify-inputLastName: center;
+  justify-content: center;
   text-align: center;
-  margin: 0px auto 0px auto;
+  margin: auto;
+  padding-top: 12vh;
 `
 
-
-
 const ProfileBody = styled.div`
-  grid-area: B;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 15vmin
+  padding: 15vmin 10px 15vmin 10px;
+  font-size: 20px;
 `
 
 const DetailsContainer = styled.div`
-  padding: 150px 10px 50px 10px;
-  margin: 100px auto;
+  padding: 1vh 10px 50px 10px;
+  margin: auto;
   background-color: #2B659B;
   width: 65vw;
-  height: 55vh;
 `
 
 const StyledButton = styled(Button)`
@@ -351,7 +347,7 @@ const StyledInput = styled.input`
 
 const FormContainer = styled.div`
   display: grid;
-  grid-template-rows: 10px 10px 10px 10px 40px 30px 40px 30px 40px 30px 40px 30px 40px 30px;
+  grid-template-rows: 5px 5px 5px 5px 40px 30px 40px 30px 40px 30px 40px 30px 40px 30px;
   justify-inputLastName: center;
   width: 50vw;
   grid-gap: 10px;
@@ -362,7 +358,6 @@ const FormContainer = styled.div`
 const Feedback = styled.p`
   color: red;
 `
-
 
 const Labels = styled.p`
   padding-top: 15px;

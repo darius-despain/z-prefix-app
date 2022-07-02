@@ -46,7 +46,7 @@ export default Bloglist;
 
 const Background = styled.div`
   background-color: #00121C;
-  height: 90vh;
+  min-height: 90vh;
   width: 75vw;
   justify-content: center;
   text-align: center;
@@ -62,4 +62,5 @@ const GridContainer = styled.div`
   grid-template-rows: repeat(auto-fill, auto);
   justify-content: center;
   margin: auto;
+  padding: 5vmin 0px 15vmin 0px;
 `

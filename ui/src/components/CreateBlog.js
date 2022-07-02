@@ -121,35 +121,16 @@ const Background = styled.div`
   width: 75vw;
   justify-content: center;
   text-align: center;
-  margin: 0px auto 0px auto;
+  margin: auto;
+  padding-top: 12vh;
 `
 
-// const BlogTitle = styled.div`
-//   font-size: 48px;
-// `
-
-// const BlogHeader = styled.div`
-//   grid-area: A;
-//   display: grid;
-//   grid-template-columns: 150px auto 150px;
-//   padding-top: 10px;
-//   height: 50px;
-// `
-
-// const BlogBody = styled.div`
-//   grid-area: B;
-//   padding-left: 10px;
-//   padding-right: 10px;
-//   padding-top: 30px;
-// `
-
 const DetailsContainer = styled.div`
-  padding: 150px 10px 50px 10px;
-  margin: 100px auto;
+  padding: 50px 10px 50px 10px;
+  margin: auto;
   background-color: #2B659B;
   width: 65vw;
-  height: 55vh;
-
+  height: auto;
 `
 
 const StyledButton = styled(Button)`
@@ -186,7 +167,7 @@ const StyledTextarea = styled.textarea`
 
 const FormContainer = styled.div`
   display: grid;
-  grid-template-rows: 15px 15px 40px 30px 40px 100px 15px 15px;
+  grid-template-rows: 15px 15px 40px 30px 40px auto 15px 15px;
   justify-content: center;
   width: 50vw;
   grid-gap: 10px;

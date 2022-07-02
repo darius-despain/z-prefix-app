@@ -238,9 +238,7 @@ const BlogHeader = styled.div`
 `
 
 const BlogBody = styled.div`
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 15vmin
+  padding: 15vmin 10px 15vmin 10px;
 `
 
 const DetailsContainer = styled.div`
@@ -248,7 +246,7 @@ const DetailsContainer = styled.div`
   margin: auto;
   background-color: #2B659B;
   width: 65vw;
-  height: 55vh;
+  height: auto;
 `
 
 const StyledButton = styled(Button)`

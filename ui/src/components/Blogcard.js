@@ -61,6 +61,7 @@ const BlogHeader = styled.div`
   padding-top: 10px;
   height: 50px;
   margin: auto 5px auto 5px;
+  width: 65vw;
 `
 
 const BlogBody = styled.div`

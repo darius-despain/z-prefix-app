@@ -41,5 +41,4 @@ const Background = styled.div`
   font-family: Arial;
   background-position: center;
   background-size: cover;
-  overflow: scroll;
 `
