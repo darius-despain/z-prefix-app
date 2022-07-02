@@ -5,6 +5,7 @@ author: Darius DeSpain (gihub user: darius-despain)
 1. [Introduction](#introduction)
 1. [Prompt Details](#prompt-details)
     1. [Requirements](#requirements)
+        1. [ERD](#erd)
     1. [Supplied User Stories](#supplied-user-stories)
 1. [Noteworthy Mentions](#noteworthy-mentions)
     1. [Additional Features](#additional-features)
@@ -19,6 +20,7 @@ This repo contains a submission for the Z-Prefix CRUD application. The prompt de
 
 This app is deployed to Heroku on two separate applications, one for the [UI/front-end](https://z-prefix-ddespain-ui.herokuapp.com/) and one for the [API/back-end](https://z-prefix-ddespain-api.herokuapp.com/).
 
+*Be aware that if the application is currently spun down because it's been idle for some time, then it will likely take some time to spin back up. If it doesn't come up the first time you may have to refresh the page. I have confirmed that in its current state it will come up if a refresh is invoked*
 
 ## Prompt Details:
 ### Requirements:
@@ -28,12 +30,14 @@ This app is deployed to Heroku on two separate applications, one for the [UI/fro
 - The database should contain at least two entities, a User and a Post, in a one to many relationship, as shown in the ERD below
 - You should style your application in order to lay out components in a sensible way
 - You should use the following stories to build out the functionality of your app
+#### ERD:
+![alt text](https://s3.us-west-2.amazonaws.com/forge-production.galvanize.com/content/fd0967e6064de2eb7a057ddb0607c21c.png "ERD")
 
 ### Supplied User Stories:
 1. As a blogger I want to be able to create an account so that I can create blogs.
     - The user credentials must be salted and hashed before being stored.
 
-            I utilized bcrypt to salt and hash using bcrypt.hash with a provided salt length, then compare passwords later using bcrypt.compare. (api/src/app.js, Line 203)
+        > I utilized bcrypt to salt and hash using bcrypt.hash with a provided salt length, then compare passwords later using bcrypt.compare. (api/src/app.js, Line 203)
 
 1. As a blogger I want to be able to log into my account so that I can see all the blogs that I have created.
     - After logging in, the blogger should be redirected to all of their blog posts.
@@ -47,7 +51,7 @@ This app is deployed to Heroku on two separate applications, one for the [UI/fro
 1. As a blogger I want to be able to edit a post so that I can fix any mistakes I made creating it.
     - When the user toggles edit mode, the page remains the same and the fields become editable.
 
-          The url remains the same, appearance is slightly different for more aesthetically pleasing form fields. The edit button toggles the editView state on the same <Blogdetails> component. (ui/src/components/Blogdetails.js, various lines)
+        > The url remains the same, appearance is slightly different for more aesthetically pleasing form fields. The edit button toggles the editView state on the same <Blogdetails> component. (ui/src/components/Blogdetails.js, various lines)
 
 1. As a blogger I want to be able to delete a post so that I can remove any unwanted content.
     - When the user deletes the blog they should be redirected to all of their blog posts.
@@ -62,7 +66,7 @@ This app is deployed to Heroku on two separate applications, one for the [UI/fro
 ## Noteworthy Mentions:
 
 ### Additional Features:
-Though not required, I implemented the following because I felt it necessary for a useful application.
+Though not required, I implemented the following because I felt they were necessary for a useful application.
 
 - Profile page (supported with API endpoints)
     - View profile information
@@ -72,7 +76,7 @@ Though not required, I implemented the following because I felt it necessary for
 - Logout button (refreshing the page also has the same effect)
 
 - Automatic Heroku Deployment
-    - This github repo is equipped with a **main.yml** file that allowed me to seemlessly deploy my application automatically each time it was pushed to the github origin. This made it much easier to deploy the application and allows me to use this as a scaffold for future full-stack applications that need deploying.
+    - This github repo is equipped with a `main.yml` file that allowed me to seemlessly deploy my application automatically each time it was pushed to github. This made it much easier to deploy the application and allows me to use this as a scaffold for future full-stack applications that need deploying.
 
 ### Fun Additions:
 These were the things I had a little more fun with while creating this application. Enjoy
@@ -82,10 +86,10 @@ These were the things I had a little more fun with while creating this applicati
     ![alt text](https://thumbs.gfycat.com/DemandingLegalFeline-max-1mb.gif "Lightsaber Fighting Loading Spinner")
 
 - Database seeded data contains Starwars-related posts
-    - I am a big Starwars fan, so to get some data I used some of the movies for some inspiration. Check them out!
+    - I am a big Starwars fan, so to get some data for the initial posts I used some of the movies for some inspiration. Check them out!
 
 ### Future Work:
-All applications are never truly finished. Although, I did my best to make this a well-rounded application, below is a list of ideas to implement that I did not get around to
+All applications are never truly finished. Although, I did my best to make this a well-rounded application, below is a list of ideas to implement that I did not get around to.
 - Cookies to track login sessions
     - Currently Blogtastic relies upon the react state to keep user data, so when the page is refreshed, this data goes away. Giving users a cookie to keep them logged in even after a refresh would enhance this experience.
 - Additional data validation
@@ -107,7 +111,7 @@ install dependencies for the api prior to docker-compose
 
     npm install
 
-install docker on your desktop if you havent already.
+install docker and docker-compose on your desktop if you havent already.
 - Visit https://docs.docker.com/get-docker/ for more information
 
 check docker is running in the command line
@@ -123,6 +127,10 @@ You can now view the application at the following URLs
  - UI: localhost:3000
 
  - API: localhost:8080
+
+When you're done, you can bring down the application with `CTRL+C` or if you ran `docker-compose up` with a `-d` flag then run another docker-compose command to stop
+
+    docker-compose down
 
 
 ### Setup Troubleshooting:
