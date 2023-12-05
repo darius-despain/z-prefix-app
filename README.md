@@ -18,10 +18,6 @@ author: Darius DeSpain (gihub user: darius-despain)
 ## Introduction:
 This repo contains a submission for the Z-Prefix CRUD application. The prompt details are listed in the [Prompt Details](#prompt-details) section.
 
-This app is deployed to Heroku on two separate applications, one for the [UI/front-end](https://z-prefix-ddespain-ui.herokuapp.com/) and one for the [API/back-end](https://z-prefix-ddespain-api.herokuapp.com/).
-
-*Be aware that if the application is currently spun down because it's been idle for some time, then it will likely take some time to spin back up. If it doesn't come up the first time you may have to refresh the page. I have confirmed that in its current state it will come up if a refresh is invoked*
-
 ## Prompt Details:
 ### Requirements:
 - Your application must be deployed and accessible to the public internet
